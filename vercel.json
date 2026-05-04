@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://www.nseindia.com/api/:path*"
+    },
+    {
+      "source": "/trendlyne/:path*",
+      "destination": "https://smartoptions.trendlyne.com/:path*"
+    }
+  ]
+}

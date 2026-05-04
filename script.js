@@ -956,12 +956,10 @@ function renderOIGainersStockHeatmap(data, container) {
 }
 
 async function fetchAllData() {
-    const CORS_PROXY = "https://api.codetabs.com/v1/proxy?quest=";
-    const fetchProxied = (url) => fetch(CORS_PROXY + encodeURIComponent(url));
     console.log('Starting data fetch...');
 
     // 0. OI Gainers Heatmap
-    fetchProxied('https://smartoptions.trendlyne.com/phoenix/api/fno/market/filter/?mtype=futures&expDate=2026-05-26&screenType=oi-gainers')
+    fetch('/trendlyne/phoenix/api/fno/market/filter/?mtype=futures&expDate=2026-05-26&screenType=oi-gainers')
         .then(res => { if (!res.ok) throw new Error('OI Gainers Network Error'); return res.json(); })
         .then(data => {
             if (data && data.body && data.body.tableData) {
@@ -983,7 +981,7 @@ async function fetchAllData() {
         });
 
     // 1. Heatmap
-    fetch('https://www.nseindia.com/api/heatmap-index?type=Broad%20Market%20Indices')
+    fetch('/api/heatmap-index?type=Broad%20Market%20Indices')
         .then(res => { if (!res.ok) throw new Error('Heatmap Network Error'); return res.json(); })
         .then(data => {
             if (data && Array.isArray(data)) {
@@ -996,7 +994,7 @@ async function fetchAllData() {
         .catch(e => console.warn('Heatmap fetch failed:', e));
 
     // 1.5 FII/DII Data
-    fetch('https://www.nseindia.com/api/fiidiiTradeReact')
+    fetch('/api/fiidiiTradeReact')
         .then(res => { if (!res.ok) throw new Error('FII/DII Network Error'); return res.json(); })
         .then(data => {
             if (data && Array.isArray(data)) {
@@ -1017,7 +1015,7 @@ async function fetchAllData() {
         });
 
     // 1.6 FII/DII Data (NSE, BSE, MSEI)
-    fetch('https://www.nseindia.com/api/fiidiiTradeNse')
+    fetch('/api/fiidiiTradeNse')
         .then(res => { if (!res.ok) throw new Error('FII/DII NSE Network Error'); return res.json(); })
         .then(data => {
             if (data && Array.isArray(data)) {
@@ -1038,7 +1036,7 @@ async function fetchAllData() {
         });
 
     // 1.7 NIFTY 50 Stock Indices (Heatmap)
-    fetch('https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050')
+    fetch('/api/equity-stockIndices?index=NIFTY%2050')
         .then(res => { if (!res.ok) throw new Error('NIFTY 50 Network Error'); return res.json(); })
         .then(data => {
             if (data && data.data) {
@@ -1110,7 +1108,7 @@ async function fetchAllData() {
         });
 
     // 1.8 NIFTY BANK Stock Indices (Heatmap)
-    fetch('https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%20BANK')
+    fetch('/api/equity-stockIndices?index=NIFTY%20BANK')
         .then(res => { if (!res.ok) throw new Error('NIFTY BANK Network Error'); return res.json(); })
         .then(data => {
             if (data && data.data) {
@@ -1144,7 +1142,7 @@ async function fetchAllData() {
         });
 
     // 2. Most Active Contracts (Futures)
-    fetch('https://www.nseindia.com/api/snapshot-derivatives-equity?index=futures')
+    fetch('/api/snapshot-derivatives-equity?index=futures')
         .then(res => { if (!res.ok) throw new Error('Volume Network Error'); return res.json(); })
         .then(data => {
             console.log('API Response (Futures):', data);
@@ -1165,7 +1163,7 @@ async function fetchAllData() {
         .catch(e => console.warn('Volume fetch failed:', e));
 
     // 3. Index Options Calls (Volume)
-    fetch('https://www.nseindia.com/api/snapshot-derivatives-equity?index=calls-index-vol')
+    fetch('/api/snapshot-derivatives-equity?index=calls-index-vol')
         .then(res => { if (!res.ok) throw new Error('Index Calls Network Error'); return res.json(); })
         .then(data => {
             console.log('API Response (Index Calls):', data);
@@ -1181,7 +1179,7 @@ async function fetchAllData() {
         .catch(e => console.warn('Index Calls fetch failed:', e));
 
     // 3.1 Index Options Puts (Volume)
-    fetch('https://www.nseindia.com/api/snapshot-derivatives-equity?index=puts-index-vol')
+    fetch('/api/snapshot-derivatives-equity?index=puts-index-vol')
         .then(res => { if (!res.ok) throw new Error('Index Puts Network Error'); return res.json(); })
         .then(data => {
             console.log('API Response (Index Puts):', data);
@@ -1197,7 +1195,7 @@ async function fetchAllData() {
         .catch(e => console.warn('Index Puts fetch failed:', e));
 
     // 4. Stock Options Calls (Volume)
-    fetch('https://www.nseindia.com/api/snapshot-derivatives-equity?index=calls-stocks-vol')
+    fetch('/api/snapshot-derivatives-equity?index=calls-stocks-vol')
         .then(res => { if (!res.ok) throw new Error('Stock Calls Network Error'); return res.json(); })
         .then(data => {
             console.log('API Response (Stock Calls):', data);
@@ -1213,7 +1211,7 @@ async function fetchAllData() {
         .catch(e => console.warn('Stock Calls fetch failed:', e));
 
     // 5. Stock Options Puts (Volume)
-    fetch('https://www.nseindia.com/api/snapshot-derivatives-equity?index=puts-stocks-vol')
+    fetch('/api/snapshot-derivatives-equity?index=puts-stocks-vol')
         .then(res => { if (!res.ok) throw new Error('Stock Puts Network Error'); return res.json(); })
         .then(data => {
             console.log('API Response (Stock Puts):', data);
@@ -1230,7 +1228,7 @@ async function fetchAllData() {
 
     //https://www.nseindia.com/api/snapshot-derivatives-equity?index=calls-stocks-vol
 
-    fetch('https://www.nseindia.com/api/snapshot-derivatives-equity?index=calls-stocks-vol')
+    fetch('/api/snapshot-derivatives-equity?index=calls-stocks-vol')
         .then(res => { if (!res.ok) throw new Error('Stock Options Network Error'); return res.json(); })
         .then(data => {
             if (data && data.data) {
