@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSE Derivatives Snapshot</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="logo-area">
+                <h1>NSE <span class="highlight">Snapshot</span></h1>
+                <p class="subtitle">Derivatives - Equity</p>
+            </div>
+            <div class="controls">
+                <button id="btn-volume" class="glass-btn active">Volume Data</button>
+                <button id="btn-value" class="glass-btn">Value Data</button>
+                <div class="timestamp" id="timestamp-display">--:--:--</div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Market Heatmap -->
+            <section id="heatmap-section" class="heatmap-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-bottom: 24px;">
+                <!-- Heatmap cards injected by JS -->
+            </section>
+
+            <!-- FII/DII Split Section -->
+            <div class="options-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 24px;">
+                <!-- Section 1: Capital Market -->
+                <div>
+                    <h3 style="margin-bottom: 12px; font-weight: 500; font-size: 1.1rem; color: #94a3b8;">NSE in Capital
+                        Market Segment</h3>
+                    <section id="fiidii-section" class="heatmap-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+                        <!-- React API Cards -->
+                    </section>
+                </div>
+
+                <!-- Section 2: NSE, BSE, MSEI -->
+                <div>
+                    <h3 style="margin-bottom: 12px; font-weight: 500; font-size: 1.1rem; color: #94a3b8;">NSE, BSE and
+                        MSEI in Capital Market Segment</h3>
+                    <section id="fiidii-nse-section" class="heatmap-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+                        <!-- NSE API Cards -->
+                    </section>
+                </div>
+            </div>
+
+            <!-- Key Metrics -->
+            <section class="metrics-grid" id="metrics-grid">
+                <div class="glass-card metric-card">
+                    <h3>Top Gainer</h3>
+                    <div class="metric-value gainer" id="metric-top-gainer">--</div>
+                    <div class="metric-sub" id="metric-top-gainer-val">--%</div>
+                </div>
+                <div class="glass-card metric-card">
+                    <h3>Top Loser</h3>
+                    <div class="metric-value loser" id="metric-top-loser">--</div>
+                    <div class="metric-sub" id="metric-top-loser-val">--%</div>
+                </div>
+                <div class="glass-card metric-card">
+                    <h3>Highest Turnover</h3>
+                    <div class="metric-value" id="metric-high-turnover">--</div>
+                    <div class="metric-sub" id="metric-high-turnover-name">--</div>
+                </div>
+                <div class="glass-card metric-card">
+                    <h3>Active Contracts</h3>
+                    <div class="metric-value" id="metric-contracts">--</div>
+                    <div class="metric-sub">Total Traded</div>
+                </div>
+            </section>
+
+            <!-- OI Gainers Day Change > 1.9% -->
+            <section style="margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px; font-weight: 500; font-size: 1.1rem; color: #94a3b8;">OI Gainers Heatmap (Day Change &gt; 1.9%)</h3>
+                <div id="oi-gainers-up-heatmap-section" class="heatmap-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- OI Gainers Day Change < -1.9% -->
+            <section style="margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px; font-weight: 500; font-size: 1.1rem; color: #94a3b8;">OI Gainers Heatmap (Day Change &lt; -1.9%)</h3>
+                <div id="oi-gainers-down-heatmap-section" class="heatmap-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- NIFTY 50 Heatmap Section -->
+            <section style="margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px; font-weight: 500; font-size: 1.1rem; color: #94a3b8;">NIFTY 50 Heatmap
+                    (Last Price >1% from Open)</h3>
+                <div id="nifty-heatmap-section" class="heatmap-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- NIFTY BANK Heatmap Section -->
+            <section style="margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px; font-weight: 500; font-size: 1.1rem; color: #94a3b8;">NIFTY BANK Heatmap
+                    (Last Price >1% from Open)</h3>
+                <div id="nifty-bank-heatmap-section" class="heatmap-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- Index Options Section (Side by Side) -->
+            <div class="options-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                <!-- Index Calls Table -->
+                <section class="glass-card table-section">
+                    <div class="table-header">
+                        <h3>Index Options Calls (>10%)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="index-options-table">
+                            <thead>
+                                <tr>
+                                    <th>Identifier</th>
+                                    <th>Type</th>
+                                    <th class="text-right">Strike</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Chg%</th>
+                                    <th class="text-right">Turnover</th>
+                                    <th class="text-right">OI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Index Puts Table -->
+                <section class="glass-card table-section">
+                    <div class="table-header">
+                        <h3>Index Options Puts (>10%)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="index-puts-table">
+                            <thead>
+                                <tr>
+                                    <th>Identifier</th>
+                                    <th>Type</th>
+                                    <th class="text-right">Strike</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Chg%</th>
+                                    <th class="text-right">Turnover</th>
+                                    <th class="text-right">OI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Data Table -->
+            <section class="glass-card table-section">
+                <div class="table-header">
+                    <h3>Most Active Contracts</h3>
+                    <input type="text" id="search-input" placeholder="Search Symbol..." class="glass-input">
+                </div>
+                <div class="table-responsive">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Expiry</th>
+                                <th class="text-right">Price</th>
+                                <th class="text-right">Chg%</th>
+                                <th class="text-right">Turnover (Cr)</th>
+                                <th class="text-right">OI</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- Options Section (Side by Side) -->
+            <div class="options-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px;">
+                <!-- Calls Table -->
+                <section class="glass-card table-section">
+                    <div class="table-header">
+                        <h3>Stock Options Calls(>10%)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="options-table">
+                            <thead>
+                                <tr>
+                                    <th>Identifier</th>
+                                    <th>Type</th>
+                                    <th class="text-right">Strike</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Chg%</th>
+                                    <th class="text-right">Turnover</th>
+                                    <th class="text-right">OI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Puts Table -->
+                <section class="glass-card table-section">
+                    <div class="table-header">
+                        <h3>Stock Options Puts(>10%)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="puts-table">
+                            <thead>
+                                <tr>
+                                    <th>Identifier</th>
+                                    <th>Type</th>
+                                    <th class="text-right">Strike</th>
+                                    <th class="text-right">Price</th>
+                                    <th class="text-right">Chg%</th>
+                                    <th class="text-right">Turnover</th>
+                                    <th class="text-right">OI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+
+<script src="https://static.app/js/static.js" type="text/javascript"></script>
+</body>
+
+</html>
