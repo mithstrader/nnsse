@@ -959,7 +959,7 @@ async function fetchAllData() {
     console.log('Starting data fetch...');
 
     // 0. OI Gainers Heatmap
-    fetch('/trendlyne/phoenix/api/fno/market/filter/?mtype=futures&expDate=2026-05-26&screenType=oi-gainers')
+    fetch('https://smartoptions.trendlyne.com/phoenix/api/fno/market/filter/?mtype=futures&expDate=2026-05-26&screenType=oi-gainers')
         .then(res => { if (!res.ok) throw new Error('OI Gainers Network Error'); return res.json(); })
         .then(data => {
             if (data && data.body && data.body.tableData) {
